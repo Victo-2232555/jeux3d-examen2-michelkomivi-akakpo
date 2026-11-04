@@ -3198,7 +3198,7 @@ MonoBehaviour:
   decalageElevation: -2
   inclinaisonSurface: -4
   collectables:
-  - <Prefab>k__BackingField: {fileID: 8843134331438102727, guid: b7e39385bfec6814b83adeb465848356, type: 3}
+  - <Prefab>k__BackingField: {fileID: 95385475}
     <Probabilite>k__BackingField: 0.2
 --- !u!4 &2083738420
 Transform:
