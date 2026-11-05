@@ -6,7 +6,7 @@ using UnityEngine;
 public class GestionnaireCharge : MonoBehaviour
 {
     [SerializeField, Tooltip("Référence aux objets de charge que le joueur peut utiliser.")]
-    private GameObject[] objetsCharge;
+    private GameObject[] objetsCharge;//Le tableau contient trois références dans l’Inspector, donc le maximum est trois.
 
     // Le nombre de charges disponibles pour le joueur.
     private int nombreCharges;
@@ -16,7 +16,7 @@ public class GestionnaireCharge : MonoBehaviour
         if(nombreCharges < objetsCharge.Length)
         {
             nombreCharges++;
-            objetsCharge[nombreCharges - 1].SetActive(true);
+            objetsCharge[nombreCharges - 1].SetActive(true);//Le SetActive(true) sert aussi à afficher l’icône
         }
     }
 

@@ -11,9 +11,34 @@ public class Surface : MonoBehaviour
     [SerializeField, Tooltip("Positions de génération des objets sur la surface.")]
     private Vector3[] positionGeneration;
 
+    private Animator animateur;
+    private GestionnaireAnimation gestionnaireAnimation;
+
     private void Awake()
     {
         Detecteur = GetComponent<DetecteurBoule>();
+        TryGetComponent(out animateur);
+    }
+
+    private void Start()
+    {
+        gestionnaireAnimation = ControleurJeu.Instance.Animations;
+        gestionnaireAnimation.EtatAnimationChange += ChangerEtatAnimation;
+
+        // Une surface créée après l'achat reçoit aussi l'état en pause.
+        ChangerEtatAnimation(gestionnaireAnimation.AnimationsActives);
+    }
+
+    private void OnDestroy()
+    {
+        if (gestionnaireAnimation != null)
+            gestionnaireAnimation.EtatAnimationChange -= ChangerEtatAnimation;
+    }
+
+    private void ChangerEtatAnimation(bool actives)
+    {
+        if (animateur != null && animateur.runtimeAnimatorController != null)
+            animateur.SetFloat("Vitesse", actives ? 1f : 0f);
     }
 
     /// <summary>
@@ -30,7 +55,7 @@ public class Surface : MonoBehaviour
 
         // Sélectionne une position aléatoire parmi les positions disponibles
         Vector3 positionChoisie = positionGeneration[Random.Range(0, positionGeneration.Length)];
-        // Instancie l'prefab à la position choisie
+        // Instancie le prefab à la position choisie
         GameObject objetGenere = Instantiate(prefab, transform);
         objetGenere.transform.localPosition = positionChoisie; // Utilise localPosition pour positionner l'objet par rapport à la surface
     }

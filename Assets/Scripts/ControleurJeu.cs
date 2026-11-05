@@ -14,6 +14,9 @@ public class ControleurJeu : MonoBehaviour
     [field:SerializeField, Tooltip("Référence aux contrôles du joueur.")]
     public PlayerInput Controles { get; private set; }
 
+    [field:SerializeField, Tooltip("Gestionnaire de l'animation des plateformes.")]
+    public GestionnaireAnimation Animations { get; private set; }
+
     private void Awake()
     {
         if(Instance == null)

@@ -27,6 +27,16 @@
                     "priority": 0
                 },
                 {
+                    "name": "AcheterPause",
+                    "type": "Button",
+                    "id": "739450d6-649c-49ed-893d-6d1b2b7e1395",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
                     "name": "Diriger",
                     "type": "Value",
                     "id": "a81de2e7-66b3-4a37-8742-e82759809bd1",
@@ -68,6 +78,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Accelerer",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8657cb3-36e4-46c2-a7a3-8dd4a8a7a408",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "AcheterPause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

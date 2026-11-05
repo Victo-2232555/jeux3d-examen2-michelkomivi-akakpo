@@ -7,6 +7,7 @@ public class ChargeAcceleration : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
+        // Si l’objet qui traverse possède le composant Boule, donne-lui une charge et fais disparaître le collectable.
         if (other.TryGetComponent(out Boule boule))
         {
             boule.AjouterChargeAcceleration();

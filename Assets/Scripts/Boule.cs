@@ -37,12 +37,20 @@ public class Boule : MonoBehaviour
     /// </summary>
     public Vector3 Velocite => rigidbody.linearVelocity;
 
+    /// <summary>
+    /// Nombre de pièces disponibles pour acheter une pause.
+    /// </summary>
+    public int NombrePieces { get; private set; }
+
+    private const int CoutPause = 5;
+
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         enAcceleration = false;
 
         PlayerInput controles = ControleurJeu.Instance.Controles;
+        // Au lancement de la scène, on attend Espace.
         controles.actions.FindAction("Commencer").performed += CommencerJeu;
     }
 
@@ -59,6 +67,8 @@ public class Boule : MonoBehaviour
         controles.actions.FindAction("Diriger").performed -= CommencerDirection;
         controles.actions.FindAction("Diriger").canceled -= ArreterDirection;
         controles.actions.FindAction("Accelerer").performed -= UtiliserChargeAcceleration;
+        controles.actions.FindAction("AcheterPause").performed -= AcheterPause;
+        controles.actions.FindAction("Commencer").performed -= CommencerJeu;
     }
 
     /// <summary>
@@ -69,12 +79,16 @@ public class Boule : MonoBehaviour
     private void CommencerJeu(InputAction.CallbackContext contexte)
     {
         PlayerInput controles = ControleurJeu.Instance.Controles;
-
+        // La direction devient active.
         controles.actions.FindAction("Diriger").performed += CommencerDirection;
         controles.actions.FindAction("Diriger").canceled += ArreterDirection;
         controles.actions.FindAction("Accelerer").performed += UtiliserChargeAcceleration;
+        controles.actions.FindAction("AcheterPause").performed += AcheterPause;
+
+        // Un prochain appui sur Espace ne rappellera plus cette méthode.
         controles.actions.FindAction("Commencer").performed -= CommencerJeu;
 
+        // La boule commence à tomber.
         rigidbody.useGravity = true;
     }
 
@@ -114,6 +128,26 @@ public class Boule : MonoBehaviour
         gestionnaireCharge.AjouterCharge();
     }
 
+    public void AjouterPiece()
+    {
+        NombrePieces++;
+    }
+
+    private void AcheterPause(InputAction.CallbackContext contexte)
+    {
+        GestionnaireAnimation animations = ControleurJeu.Instance.Animations;
+
+        // Un achat déjà ne plus d'achat de pièce
+        if (NombrePieces < CoutPause || !animations.AnimationsActives)
+            return;
+
+        NombrePieces -= CoutPause;
+        animations.ArreterAnimations();
+    }
+
+    // Le déclenchement avec W
+    // Aucune accélération n’est déjà en cours
+    // Le gestionnaire accepte de consommer une charge.
     private void UtiliserChargeAcceleration(InputAction.CallbackContext contexte)
     {
         if (!enAcceleration && gestionnaireCharge.UtiliserCharge())
@@ -129,7 +163,8 @@ public class Boule : MonoBehaviour
         float tempsEcoule = 0.0f;
         while (tempsEcoule < dureeAcceleration)
         {
-            rigidbody.AddForce(Velocite.normalized * multiplicateurForceAcceleration, ForceMode.Force); // Applique une force doublée pour l'accélération
+            // Applique une force doublée pour l'accélération
+            rigidbody.AddForce(Velocite.normalized * multiplicateurForceAcceleration, ForceMode.Force);
             tempsEcoule += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }

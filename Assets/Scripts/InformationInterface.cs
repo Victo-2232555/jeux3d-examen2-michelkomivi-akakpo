@@ -17,6 +17,9 @@ public class InformationInterface : MonoBehaviour
     [SerializeField, Tooltip("Référence au texte affichant la texteVitesse.")]
     TextMeshProUGUI texteVitesse;
 
+    [SerializeField, Tooltip("Référence au texte affichant le nombre de pièces disponibles.")]
+    private TextMeshProUGUI texteNombrePieces;
+
     [SerializeField, Tooltip("Référence au gestionnaire de surfaces.")]
     private GestionnaireSurface gestionnaireSurface;
 
@@ -75,5 +78,8 @@ public class InformationInterface : MonoBehaviour
     
         texteVitesse.text = $"{boule.Velocite.magnitude:F2}";
         texteNombreSurfacesParcourues.text = gestionnaireSurface.SurfacesParcourues.ToString();
+
+        if (texteNombrePieces != null)
+            texteNombrePieces.text = boule.NombrePieces.ToString();
     }
 }
